@@ -17,14 +17,16 @@ const BookCard = ({ book }) => {
         textAlign: "center",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         width: "200px",
-        
-        verticalAlign: "top",
+        height: "380px", /* Fixed height for the card */
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       <img
         src={book.cover}
         alt={book.title}
-        style={{ width: "100%", height: "250px", objectFit: "cover", borderRadius: "4px" }}
+        style={{ width: "100%", height: "220px", objectFit: "cover", borderRadius: "4px" }}
       />
       <h3 style={{ color: theme.accent }}>{book.title}</h3>
       <p>المؤلف: {book.author}</p>
