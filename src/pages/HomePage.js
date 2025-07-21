@@ -31,7 +31,7 @@ const HomePage = () => {
           }}
         />
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", minHeight: "400px" }}>
         {filteredBooks.map((book) => (
           <BookCard key={book.id} book={book} />
         ))}
