@@ -25,7 +25,7 @@ export const books = [
     id: 4,
     title: "الكتاب الرابع",
     author: "المؤلف الرابع",
-    category: "دينيه و بالاخص السلفيه منها",
+    category: "كتب دينيه",
     cover: "https://via.placeholder.com/150",
   },
   {
