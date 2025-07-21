@@ -42,12 +42,12 @@ const HomePage = () => {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
           style={{
-            padding: "10px",
+            padding: "7.5px",
             borderRadius: "5px",
             border: `1px solid ${theme.secondary}`,
             backgroundColor: theme.background,
             color: theme.primary,
-            marginLeft: "10px",
+            marginRight: "10px",
           }}
         >
           {categories.map(category => (
