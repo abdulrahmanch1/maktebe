@@ -29,12 +29,13 @@ const HomePage = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
             padding: "10px",
-            width: "50%",
+            width: "40%",
             borderRadius: "5px",
             border: `1px solid ${theme.secondary}`,
             backgroundColor: theme.background,
             color: theme.primary,
             marginBottom: "10px",
+            marginRight: "10px", /* Added gap */
           }}
         />
         <select
