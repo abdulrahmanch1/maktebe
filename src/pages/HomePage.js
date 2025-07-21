@@ -7,10 +7,16 @@ import { ThemeContext } from "../contexts/ThemeContext";
 const HomePage = () => {
   const { theme } = useContext(ThemeContext);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("الكل"); // New state for category filter
 
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Get unique categories from books data
+  const categories = ["الكل", ...new Set(books.map(book => book.category))];
+
+  const filteredBooks = books.filter((book) => {
+    const matchesSearchTerm = book.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "الكل" || book.category === selectedCategory;
+    return matchesSearchTerm && matchesCategory;
+  });
 
   return (
     <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>
@@ -28,8 +34,25 @@ const HomePage = () => {
             border: `1px solid ${theme.secondary}`,
             backgroundColor: theme.background,
             color: theme.primary,
+            marginBottom: "10px",
           }}
         />
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          style={{
+            padding: "10px",
+            borderRadius: "5px",
+            border: `1px solid ${theme.secondary}`,
+            backgroundColor: theme.background,
+            color: theme.primary,
+            marginLeft: "10px",
+          }}
+        >
+          {categories.map(category => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", minHeight: "70vh" }}>
         {filteredBooks.map((book) => (
