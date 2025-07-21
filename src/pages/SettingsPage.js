@@ -13,19 +13,19 @@ const SettingsPage = () => {
           <h2 style={{ color: theme.background, textAlign: "center" }}>إعدادات المظهر</h2>
           <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "15px" }}>
             <button
-              onClick={() => theme.toggleTheme("theme1")}
+              onClick={() => toggleTheme("theme1")}
               style={{ backgroundColor: theme.accent, color: theme.primary }}
             >
               Theme 1
             </button>
             <button
-              onClick={() => theme.toggleTheme("theme2")}
+              onClick={() => toggleTheme("theme2")}
               style={{ backgroundColor: theme.accent, color: theme.primary }}
             >
               Theme 2
             </button>
             <button
-              onClick={() => theme.toggleTheme("theme3")}
+              onClick={() => toggleTheme("theme3")}
               style={{ backgroundColor: theme.accent, color: theme.primary }}
             >
               Theme 3
