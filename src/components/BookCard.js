@@ -34,9 +34,7 @@ const BookCard = ({ book }) => {
         alt={book.title}
         style={{ width: "100%", height: "220px", objectFit: "cover", borderRadius: "4px" }}
       />
-      <h3 style={{ color: theme.accent }}>{book.title}</h3>
-      <p>المؤلف: {book.author}</p>
-      <p>التصنيف: {book.category}</p>
+      
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}>
         <button
           onClick={handleReadClick}
