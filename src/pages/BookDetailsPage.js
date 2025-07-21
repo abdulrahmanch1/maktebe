@@ -10,15 +10,20 @@ const BookDetailsPage = () => {
   const book = books.find((b) => b.id === parseInt(id));
 
   if (!book) {
-    return <div>الكتاب غير موجود</div>;
+    return <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>الكتاب غير موجود</div>;
   }
 
   return (
-    <div style={{ backgroundColor: theme.background, color: theme.primary }}>
-      <h1>{book.title}</h1>
-      <img src={book.cover} alt={book.title} />
-      <p>المؤلف: {book.author}</p>
-      <p>التصنيف: {book.category}</p>
+    <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px", textAlign: "center" }}>
+      <h1 style={{ color: theme.primary }}>{book.title}</h1>
+      <img
+        src={book.cover}
+        alt={book.title}
+        style={{ maxWidth: "300px", height: "auto", borderRadius: "8px", marginBottom: "20px" }}
+      />
+      <p style={{ fontSize: "1.2em" }}>المؤلف: <span style={{ fontWeight: "bold", color: theme.accent }}>{book.author}</span></p>
+      <p style={{ fontSize: "1.2em" }}>التصنيف: <span style={{ fontWeight: "bold", color: theme.accent }}>{book.category}</span></p>
+      {/* Add more details here if available in mock data */}
     </div>
   );
 };

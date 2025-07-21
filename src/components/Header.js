@@ -7,23 +7,56 @@ const Header = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <header style={{ backgroundColor: theme.primary, color: theme.background }}>
+    <header
+      style={{
+        backgroundColor: theme.primary,
+        color: theme.background,
+        padding: "15px 20px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
       <nav>
-        <Link to="/">الرئيسية</Link>
-        <Link to="/complaints">الشكاوي</Link>
-        <Link to="/settings">الإعدادات</Link>
-        <Link to="/favorites">المفضلة</Link>
-        <Link to="/reading-list">قائمة القراءة</Link>
+        <Link to="/" style={{ color: theme.background }}>الرئيسية</Link>
+        <Link to="/complaints" style={{ color: theme.background }}>الشكاوي</Link>
+        <Link to="/settings" style={{ color: theme.background }}>الإعدادات</Link>
+        <Link to="/favorites" style={{ color: theme.background }}>المفضلة</Link>
+        <Link to="/reading-list" style={{ color: theme.background }}>قائمة القراءة</Link>
       </nav>
-      <div>
-        <button onClick={() => toggleTheme("theme1")}>Theme 1</button>
-        <button onClick={() => toggleTheme("theme2")}>Theme 2</button>
-        <button onClick={() => toggleTheme("theme3")}>Theme 3</button>
-        <button onClick={() => toggleTheme("theme4")}>Theme 4</button>
+      <div style={{ display: "flex", gap: "10px" }}>
+        <button
+          onClick={() => toggleTheme("theme1")}
+          style={{ backgroundColor: theme.secondary, color: theme.background }}
+        >
+          Theme 1
+        </button>
+        <button
+          onClick={() => toggleTheme("theme2")}
+          style={{ backgroundColor: theme.secondary, color: theme.background }}
+        >
+          Theme 2
+        </button>
+        <button
+          onClick={() => toggleTheme("theme3")}
+          style={{ backgroundColor: theme.secondary, color: theme.background }}
+        >
+          Theme 3
+        </button>
+        <button
+          onClick={() => toggleTheme("theme4")}
+          style={{ backgroundColor: theme.secondary, color: theme.background }}
+        >
+          Theme 4
+        </button>
       </div>
-      <div>
-        <Link to="/settings">اسم المستخدم</Link>
-        <img src="https://via.placeholder.com/50" alt="user" />
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <Link to="/settings" style={{ color: theme.background }}>اسم المستخدم</Link>
+        <img
+          src="https://via.placeholder.com/50"
+          alt="user"
+          style={{ borderRadius: "50%", width: "40px", height: "40px" }}
+        />
       </div>
     </header>
   );

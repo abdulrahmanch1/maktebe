@@ -6,11 +6,15 @@ const ComplaintsPage = () => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <div style={{ backgroundColor: theme.background, color: theme.primary }}>
-      <h1>الشكاوي</h1>
-      <form>
-        <textarea placeholder="اكتب شكواك هنا"></textarea>
-        <button type="submit">إرسال</button>
+    <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>
+      <h1 style={{ color: theme.primary, textAlign: "center" }}>صفحة الشكاوي</h1>
+      <form style={{ backgroundColor: theme.secondary, color: theme.background }}>
+        <textarea
+          placeholder="اكتب شكواك هنا..."
+          rows="8"
+          style={{ backgroundColor: theme.background, color: theme.primary, borderColor: theme.accent }}
+        ></textarea>
+        <button type="submit" style={{ backgroundColor: theme.accent, color: theme.primary }}>إرسال الشكوى</button>
       </form>
     </div>
   );
