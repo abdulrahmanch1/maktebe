@@ -58,15 +58,15 @@ const BookCard = ({ book }) => {
           style={{
             cursor: "pointer",
             color: isLiked ? "red" : "white", /* White by default, red when liked */
-            fontSize: "24px", /* Make heart visible */
+            fontSize: "20px", /* Slightly smaller heart */
             backgroundColor: theme.primary, /* Background for the heart icon */
-            padding: "5px",
+            padding: "4px",
             borderRadius: "50%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "34px", /* Fixed width for circular background */
-            height: "34px", /* Fixed height for circular background */
+            width: "30px", /* Fixed width for circular background */
+            height: "30px", /* Fixed height for circular background */
           }}
         >
           {isLiked ? '❤️' : '♡'}
