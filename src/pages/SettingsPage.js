@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 
 const SettingsPage = () => {
-  const { theme } = useContext(ThemeContext);
+   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>
