@@ -31,7 +31,7 @@ const ReadingListPage = () => {
             cursor: "pointer",
           }}
         >
-          الكتب التي تم اقرأتة
+          الكتب التي تم قراءتها
         </button>
         <button
           onClick={() => setShowReadBooks(false)}

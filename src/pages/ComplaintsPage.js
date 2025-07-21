@@ -7,7 +7,7 @@ const ComplaintsPage = () => {
 
   return (
     <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>
-      <h1 style={{ color: theme.primary, textAlign: "center" }}>صفحة الشكاوي</h1>
+      <h1 style={{ color: theme.primary, textAlign: "center" }}>صفحة الشكاوى</h1>
       <form style={{ backgroundColor: theme.secondary, color: theme.background }}>
         <textarea
           placeholder="اكتب شكواك هنا..."

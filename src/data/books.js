@@ -46,7 +46,7 @@ export const books = [
     id: 7,
     title: "الكتاب السابع",
     author: "المؤلف السابع",
-    category: "كتب الاستثماريه",
+    category: "الكتب الاستثمارية",
     cover: "https://via.placeholder.com/200x300",
   },
 ];
