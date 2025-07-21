@@ -1,11 +1,11 @@
-
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../contexts/ThemeContext";
 
 const BookCard = ({ book }) => {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
+  const [isLiked, setIsLiked] = useState(false);
 
   const handleReadClick = () => {
     navigate(`/book/${book.id}`);
@@ -77,3 +77,4 @@ const BookCard = ({ book }) => {
 };
 
 export default BookCard;
+// Minor change to trigger re-render
