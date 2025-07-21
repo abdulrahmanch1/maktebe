@@ -29,7 +29,7 @@ const HomePage = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
             padding: "10px",
-            width: "40%",
+            width: "50%",
             borderRadius: "5px",
             border: `1px solid ${theme.secondary}`,
             backgroundColor: theme.background,
@@ -42,12 +42,12 @@ const HomePage = () => {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
           style={{
-            padding: "10px",
+            padding: "7px 10px",
             borderRadius: "5px",
             border: `1px solid ${theme.secondary}`,
             backgroundColor: theme.background,
             color: theme.primary,
-            marginLeft: "10px",
+            marginRight: "10px",
           }}
         >
           {categories.map(category => (

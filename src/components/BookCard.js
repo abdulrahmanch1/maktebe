@@ -4,6 +4,7 @@ import { ThemeContext } from "../contexts/ThemeContext";
 
 const BookCard = ({ book }) => {
   const { theme } = useContext(ThemeContext);
+  const [isLiked, setIsLiked] = useState(false);
 
   return (
     <div
