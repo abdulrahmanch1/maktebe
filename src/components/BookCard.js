@@ -37,21 +37,41 @@ const BookCard = ({ book }) => {
       <h3 style={{ color: theme.accent }}>{book.title}</h3>
       <p>المؤلف: {book.author}</p>
       <p>التصنيف: {book.category}</p>
-      <button
-        onClick={handleReadClick}
-        style={{
-          backgroundColor: theme.accent,
-          color: theme.primary,
-          padding: "10px 15px",
-          borderRadius: "5px",
-          border: "none",
-          cursor: "pointer",
-          marginTop: "10px",
-          width: "100%", /* Make button full width of card */
-        }}
-      >
-        قراءة الكتاب
-      </button>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}>
+        <button
+          onClick={handleReadClick}
+          style={{
+            backgroundColor: theme.accent,
+            color: theme.primary,
+            padding: "8px 12px", /* Smaller padding */
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer",
+            flexGrow: 1, /* Allow button to grow */
+            marginRight: "5px", /* Small gap */
+          }}
+        >
+          قراءة الكتاب
+        </button>
+        <span
+          onClick={() => setIsLiked(!isLiked)}
+          style={{
+            cursor: "pointer",
+            color: isLiked ? "red" : "white", /* White by default, red when liked */
+            fontSize: "24px", /* Make heart visible */
+            backgroundColor: theme.primary, /* Background for the heart icon */
+            padding: "5px",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "34px", /* Fixed width for circular background */
+            height: "34px", /* Fixed height for circular background */
+          }}
+        >
+          {isLiked ? '❤️' : '♡'}
+        </span>
+      </div>
     </div>
   );
 };
