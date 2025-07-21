@@ -61,12 +61,14 @@ const BookCard = ({ book }) => {
             fontSize: "20px", /* Slightly smaller heart */
             backgroundColor: theme.primary, /* Background for the heart icon */
             padding: "4px",
+            marginRight:"4px",
             borderRadius: "50%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             width: "30px", /* Fixed width for circular background */
             height: "30px", /* Fixed height for circular background */
+            transition: "color 0.3s ease, background-color 0.3s ease", /* Add transition */
           }}
         >
           {isLiked ? '❤️' : '♡'}
