@@ -68,7 +68,8 @@ const BookCard = ({ book }) => {
             justifyContent: "center",
             width: "30px", /* Fixed width for circular background */
             height: "30px", /* Fixed height for circular background */
-            transition: "color 0.3s ease, background-color 0.3s ease", /* Add transition */
+            transition: "color 0.3s ease, background-color 0.3s ease, transform 0.3s ease", /* Add transform to transition */
+            transform: isLiked ? "scale(1.2)" : "scale(1)", /* Scale effect */
           }}
         >
           {isLiked ? '❤️' : '♡'}
