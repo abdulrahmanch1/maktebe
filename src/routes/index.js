@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MainLayout from '../layouts/MainLayout';
 
 // Import your page components here
 import HomePage from '../pages/HomePage';
@@ -17,15 +18,17 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/complaints" element={<ComplaintsPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/book/:id" element={<BookDetailsPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
-        <Route path="/reading-list" element={<ReadingListPage />} />
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="complaints" element={<ComplaintsPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="book/:id" element={<BookDetailsPage />} />
+          <Route path="admin" element={<AdminPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="reading-list" element={<ReadingListPage />} />
+        </Route>
       </Routes>
     </Router>
   );
