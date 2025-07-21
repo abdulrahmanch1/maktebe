@@ -31,8 +31,8 @@ const BookCard = ({ book }) => {
     >
       <img
         src={book.cover}
-        alt={book.title}
-        style={{ width: "100%", height: "220px", objectFit: "cover", borderRadius: "4px" }}
+        alt=""
+        style={{ width: "100%", height: "220px", objectFit: "cover", borderRadius: "4px", display: "block", margin: "0 auto" }}
       />
       
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}>
