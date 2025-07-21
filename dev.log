@@ -123,3 +123,22 @@ src/components/Header.js
   Line 7:18:  'toggleTheme' is assigned a value but never used  no-unused-vars
 
 webpack compiled with 1 warning
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/SettingsPage.js
+  Line 34:30:  'toggleTheme' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+WARNING in [eslint] 
+src/components/Header.js
+  Line 7:18:  'toggleTheme' is assigned a value but never used  no-unused-vars
+
+ERROR in [eslint] 
+src/pages/SettingsPage.js
+  Line 34:30:  'toggleTheme' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+
+webpack compiled with 1 error and 1 warning

@@ -31,7 +31,7 @@ const SettingsPage = () => {
               Theme 3
             </button>
             <button
-              onClick={() => theme.toggleTheme("theme4")}
+              onClick={() => toggleTheme("theme4")}
               style={{ backgroundColor: theme.accent, color: theme.primary }}
             >
               Theme 4
