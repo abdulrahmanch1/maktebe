@@ -17,7 +17,7 @@ const BookCard = ({ book }) => {
         textAlign: "center",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         width: "200px",
-        display: "inline-block",
+        
         verticalAlign: "top",
       }}
     >
