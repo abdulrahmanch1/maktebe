@@ -10,6 +10,20 @@ const HomePage = () => {
   return (
     <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>
       <h1 style={{ color: theme.primary, textAlign: "center" }}>البحث عن الكتب</h1>
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <input
+          type="text"
+          placeholder="ابحث عن كتاب..."
+          style={{
+            padding: "10px",
+            width: "50%",
+            borderRadius: "5px",
+            border: `1px solid ${theme.secondary}`,
+            backgroundColor: theme.background,
+            color: theme.primary,
+          }}
+        />
+      </div>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
         {books.map((book) => (
           <BookCard key={book.id} book={book} />
