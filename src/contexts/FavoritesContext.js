@@ -10,14 +10,18 @@ export const FavoritesContext = createContext({
 
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
-  const { isLoggedIn, user } = useContext(AuthContext);
+  const { isLoggedIn, user, token } = useContext(AuthContext); // Get token from AuthContext
 
   // Fetch favorites when user logs in or changes
   useEffect(() => {
     const fetchFavorites = async () => {
-      if (isLoggedIn && user && user._id) {
+      if (isLoggedIn && user && user._id && token) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/users/${user._id}`);
+          const response = await axios.get(`http://localhost:5000/api/users/${user._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           setFavorites(response.data.favorites || []);
         } catch (error) {
           console.error("Failed to fetch favorites:", error);
@@ -28,10 +32,10 @@ export const FavoritesProvider = ({ children }) => {
       }
     };
     fetchFavorites();
-  }, [isLoggedIn, user]);
+  }, [isLoggedIn, user, token]); // Add token to dependency array
 
   const toggleFavorite = async (bookId) => {
-    if (!isLoggedIn || !user || !user._id) {
+    if (!isLoggedIn || !user || !user._id || !token) {
       alert("Please log in to add books to your favorites.");
       return;
     }
@@ -39,11 +43,19 @@ export const FavoritesProvider = ({ children }) => {
     try {
       if (favorites.includes(bookId)) {
         // Remove from favorites
-        await axios.delete(`http://localhost:5000/api/users/${user._id}/favorites/${bookId}`);
+        await axios.delete(`http://localhost:5000/api/users/${user._id}/favorites/${bookId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setFavorites(favorites.filter((id) => id !== bookId));
       } else {
         // Add to favorites
-        await axios.post(`http://localhost:5000/api/users/${user._id}/favorites`, { bookId });
+        await axios.post(`http://localhost:5000/api/users/${user._id}/favorites`, { bookId }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setFavorites([...favorites, bookId]);
       }
     } catch (error) {

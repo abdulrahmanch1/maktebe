@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { FavoritesContext } from "../contexts/FavoritesContext";
+import { AuthContext } from "../contexts/AuthContext"; // Import AuthContext
 
 const BookCard = ({ book }) => {
   const { theme } = useContext(ThemeContext);
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
+  const { isLoggedIn } = useContext(AuthContext); // Get isLoggedIn from AuthContext
   const navigate = useNavigate();
   const isLiked = isFavorite(book._id);
 
@@ -56,7 +58,13 @@ const BookCard = ({ book }) => {
           قراءة الكتاب
         </button>
         <span
-          onClick={() => toggleFavorite(book._id)}
+          onClick={() => {
+            if (!isLoggedIn) {
+              alert("يجب تسجيل الدخول لإضافة الكتاب للمفضلة.");
+              return;
+            }
+            toggleFavorite(book._id);
+          }}
           style={{
             cursor: "pointer",
             color: isLiked ? "red" : "white", /* White by default, red when liked */

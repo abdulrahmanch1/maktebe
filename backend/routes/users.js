@@ -59,6 +59,8 @@ router.post('/login', async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
+        favorites: user.favorites, // Include favorites
+        readingList: user.readingList, // Include readingList
         token: generateToken(user._id),
       });
     } else {
