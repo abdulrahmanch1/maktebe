@@ -2,9 +2,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Header = () => {
-    const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
+  const { isLoggedIn, user, logout } = useContext(AuthContext);
 
   return (
     <header
@@ -26,12 +28,22 @@ const Header = () => {
       </nav>
       
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <Link to="/settings" style={{ color: theme.background }}>اسم المستخدم</Link>
-        <img
-          src="https://via.placeholder.com/50"
-          alt="user"
-          style={{ borderRadius: "50%", width: "40px", height: "40px" }}
-        />
+        {isLoggedIn ? (
+          <>
+            <Link to="/settings" style={{ color: theme.background }}>{user ? user.username : "اسم المستخدم"}</Link>
+            <img
+              src="https://via.placeholder.com/50"
+              alt="user"
+              style={{ borderRadius: "50%", width: "40px", height: "40px" }}
+            />
+            <button onClick={logout} style={{ backgroundColor: theme.accent, color: theme.primary, border: "none", padding: "8px 12px", borderRadius: "5px", cursor: "pointer" }}>تسجيل الخروج</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" style={{ color: theme.background, marginLeft: "10px" }}>تسجيل الدخول</Link>
+            <Link to="/register" style={{ backgroundColor: theme.accent, color: theme.primary, padding: "8px 12px", borderRadius: "5px", textDecoration: "none" }}>إنشاء حساب</Link>
+          </>
+        )}
       </div>
     </header>
   );

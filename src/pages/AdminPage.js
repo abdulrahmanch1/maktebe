@@ -5,6 +5,7 @@ import { books } from "../data/books";
 
 const AdminPage = () => {
   const { theme } = useContext(ThemeContext);
+  const categories = [...new Set(books.map((book) => book.category))];
 
   return (
     <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>
@@ -23,7 +24,13 @@ const AdminPage = () => {
           </div>
           <div style={{ marginBottom: "15px" }}>
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>التصنيف</label>
-            <input type="text" placeholder="أدخل التصنيف" style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
+            <select style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }}>
+              {categories.map((category) => (
+                <option key={category} value={category}>{
+                  category
+                }</option>
+              ))}
+            </select>
           </div>
           <div style={{ marginBottom: "15px" }}>
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>الوصف</label>
