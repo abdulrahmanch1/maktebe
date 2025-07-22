@@ -56,11 +56,13 @@ router.post('/login', async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
       res.json({
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        favorites: user.favorites, // Include favorites
-        readingList: user.readingList, // Include readingList
+        user: {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          favorites: user.favorites, // Include favorites
+          readingList: user.readingList, // Include readingList
+        },
         token: generateToken(user._id),
       });
     } else {

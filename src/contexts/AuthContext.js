@@ -10,28 +10,40 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-
-  // Load user and token from localStorage on initial load
-  useEffect(() => {
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
     try {
       const storedUser = localStorage.getItem("user");
+      return storedUser && storedUser !== "" ? true : false;
+    } catch (error) {
+      return false;
+    }
+  });
+  const [user, setUser] = useState(() => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      return storedUser && storedUser !== "" ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      return null;
+    }
+  });
+  const [token, setToken] = useState(() => {
+    try {
       const storedToken = localStorage.getItem("token");
+      return storedToken && storedToken !== "" ? storedToken : null;
+    } catch (error) {
+      return null;
+    }
+  });
 
-      if (storedUser && storedToken && storedUser !== "" && storedToken !== "") {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-        setToken(storedToken);
-        setIsLoggedIn(true);
-        // Set default Authorization header for axios
+  // Set default Authorization header for axios on initial load
+  useEffect(() => {
+    try {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken && storedToken !== "") {
         axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
       }
     } catch (error) {
-      console.error("Error loading user/token from localStorage:", error);
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
+      console.error("Error setting axios default header from localStorage:", error);
     }
   }, []);
 
@@ -40,8 +52,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post("http://localhost:5000/api/users/login", { email, password });
       const { token: userToken, ...userData } = response.data; // Correctly extract token and rest of data as user
 
-      console.log("LOGIN RESPONSE DATA:", response.data);
-      console.log("LOGIN RESPONSE USER DATA:", userData);
+      
 
       setIsLoggedIn(true);
       setUser(userData);
@@ -51,6 +62,7 @@ export const AuthProvider = ({ children }) => {
       // Set default Authorization header for axios
       axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
 
+      window.location.href = "/"; // Force reload and navigate to home
       return { success: true };
     } catch (error) {
       console.error("Login failed:", error);
