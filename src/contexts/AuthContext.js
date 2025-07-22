@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
       const storedUser = localStorage.getItem("user");
       const storedToken = localStorage.getItem("token");
 
-      if (storedUser && storedToken) {
+      if (storedUser && storedToken && storedUser !== "" && storedToken !== "") {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
         setToken(storedToken);
@@ -38,7 +38,10 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post("http://localhost:5000/api/users/login", { email, password });
-      const { user: userData, token: userToken } = response.data;
+      const { token: userToken, ...userData } = response.data; // Correctly extract token and rest of data as user
+
+      console.log("LOGIN RESPONSE DATA:", response.data);
+      console.log("LOGIN RESPONSE USER DATA:", userData);
 
       setIsLoggedIn(true);
       setUser(userData);

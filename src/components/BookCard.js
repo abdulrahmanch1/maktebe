@@ -7,9 +7,12 @@ import { AuthContext } from "../contexts/AuthContext"; // Import AuthContext
 const BookCard = ({ book }) => {
   const { theme } = useContext(ThemeContext);
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
-  const { isLoggedIn } = useContext(AuthContext); // Get isLoggedIn from AuthContext
+  const { isLoggedIn, user } = useContext(AuthContext); // Get isLoggedIn and user from AuthContext
   const navigate = useNavigate();
   const isLiked = isFavorite(book._id);
+
+  console.log("USER FROM CONTEXT:", user);
+  console.log("isLoggedIn:", isLoggedIn);
 
   const handleReadClick = () => {
     navigate(`/book/${book._id}`);
