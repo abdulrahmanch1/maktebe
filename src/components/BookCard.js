@@ -1,11 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { FavoritesContext } from "../contexts/FavoritesContext";
 
 const BookCard = ({ book }) => {
   const { theme } = useContext(ThemeContext);
+  const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
   const navigate = useNavigate();
-  const [isLiked, setIsLiked] = useState(false);
+  const isLiked = isFavorite(book.id);
 
   const handleReadClick = () => {
     navigate(`/book/${book.id}`);
@@ -23,7 +25,7 @@ const BookCard = ({ book }) => {
         textAlign: "center",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         width: "200px",
-        height: "380px", /* Fixed height for the card */
+        height: "450px", /* Fixed height for the card */
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -31,17 +33,19 @@ const BookCard = ({ book }) => {
     >
       <img
         src={book.cover}
-        alt=""
-        style={{ width: "100%", height: "220px", objectFit: "cover", borderRadius: "4px", display: "block", margin: "0 auto" }}
+        alt="صورة الكتاب"
+        style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "4px", display: "block", margin: "0 auto" }}
       />
-      
+      <h2 style={{ fontSize: "1.2em", marginTop: "3px" , marginBottom: "3px", fontWeight: "bold", textAlign: "center", color: theme.accent, margin: "0 auto"}}>
+        {book.title}
+      </h2>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}>
         <button
           onClick={handleReadClick}
           style={{
             backgroundColor: theme.accent,
             color: theme.primary,
-            padding: "8px 12px", /* Smaller padding */
+            padding: "8px 12px ", /* Smaller padding */
             borderRadius: "5px",
             border: "none",
             cursor: "pointer",
@@ -52,7 +56,7 @@ const BookCard = ({ book }) => {
           قراءة الكتاب
         </button>
         <span
-          onClick={() => setIsLiked(!isLiked)}
+          onClick={() => toggleFavorite(book.id)}
           style={{
             cursor: "pointer",
             color: isLiked ? "red" : "white", /* White by default, red when liked */
@@ -78,4 +82,3 @@ const BookCard = ({ book }) => {
 };
 
 export default BookCard;
-// Minor change to trigger re-render
