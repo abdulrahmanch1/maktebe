@@ -1,16 +1,30 @@
 
-import React, { useContext, useState } from "react";
-import { books } from "../data/books";
+import React, { useContext, useState, useEffect } from "react";
 import BookCard from "../components/BookCard";
 import { ThemeContext } from "../contexts/ThemeContext";
+import axios from "axios";
 
 const HomePage = () => {
   const { theme } = useContext(ThemeContext);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("الكل"); // New state for category filter
+  const [selectedCategory, setSelectedCategory] = useState("الكل");
+  const [books, setBooks] = useState([]);
+  const [categories, setCategories] = useState(["الكل"]);
 
-  // Get unique categories from books data
-  const categories = ["الكل", ...new Set(books.map(book => book.category))];
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/books");
+        setBooks(response.data);
+
+        const uniqueCategories = ["الكل", ...new Set(response.data.map(book => book.category))];
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
+    };
+    fetchBooks();
+  }, []);
 
   const filteredBooks = books.filter((book) => {
     const matchesSearchTerm = book.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -35,7 +49,7 @@ const HomePage = () => {
             backgroundColor: theme.background,
             color: theme.primary,
             marginBottom: "10px",
-            marginRight: "10px", /* Added gap */
+            marginRight: "10px",
           }}
         />
         <select
@@ -57,7 +71,7 @@ const HomePage = () => {
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", minHeight: "70vh" }}>
         {filteredBooks.map((book) => (
-          <BookCard key={book.id} book={book} />
+          <BookCard key={book._id} book={book} />
         ))}
       </div>
     </div>

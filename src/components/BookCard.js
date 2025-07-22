@@ -7,10 +7,10 @@ const BookCard = ({ book }) => {
   const { theme } = useContext(ThemeContext);
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
   const navigate = useNavigate();
-  const isLiked = isFavorite(book.id);
+  const isLiked = isFavorite(book._id);
 
   const handleReadClick = () => {
-    navigate(`/book/${book.id}`);
+    navigate(`/book/${book._id}`);
   };
 
   return (
@@ -56,7 +56,7 @@ const BookCard = ({ book }) => {
           قراءة الكتاب
         </button>
         <span
-          onClick={() => toggleFavorite(book.id)}
+          onClick={() => toggleFavorite(book._id)}
           style={{
             cursor: "pointer",
             color: isLiked ? "red" : "white", /* White by default, red when liked */

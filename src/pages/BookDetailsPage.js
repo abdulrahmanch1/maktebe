@@ -1,16 +1,41 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { books } from "../data/books";
+import axios from "axios";
 
 const BookDetailsPage = () => {
   const { theme } = useContext(ThemeContext);
   const { id } = useParams();
-  const book = books.find((b) => b.id === parseInt(id));
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBookDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/books/${id}`);
+        setBook(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching book details:", err);
+        setError("الكتاب غير موجود أو حدث خطأ أثناء جلبه.");
+        setLoading(false);
+      }
+    };
+    fetchBookDetails();
+  }, [id]);
+
+  if (loading) {
+    return <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px", textAlign: "center" }}>جاري تحميل تفاصيل الكتاب...</div>;
+  }
+
+  if (error) {
+    return <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px", textAlign: "center", color: "red" }}>{error}</div>;
+  }
 
   if (!book) {
-    return <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>الكتاب غير موجود</div>;
+    return <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px", textAlign: "center" }}>الكتاب غير موجود</div>;
   }
 
   return (
