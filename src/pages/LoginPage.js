@@ -4,6 +4,7 @@ import { ThemeContext } from "../contexts/ThemeContext";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
 import { useGoogleLogin } from '@react-oauth/google';
 
 const LoginPage = () => {
