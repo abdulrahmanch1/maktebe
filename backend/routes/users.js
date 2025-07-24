@@ -49,6 +49,7 @@ router.post('/register', async (req, res) => {
 // User login
 router.post('/login', async (req, res) => {
   try {
+    console.log("Login request body:", req.body); // Debugging line
     const { email, password } = req.body;
 
     // Find user by email and include password for comparison

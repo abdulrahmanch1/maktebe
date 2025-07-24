@@ -53,7 +53,7 @@ export const FavoritesProvider = ({ children }) => {
     try {
       if (favorites.includes(bookId)) {
         // Remove from favorites
-        const res = await axios.delete(`http://localhost:5000/api/users/${user._id}/favorites/${bookId}`, {
+        const res = await axios.delete(`${process.env.REACT_APP_API_URL}/api/users/${user._id}/favorites/${bookId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

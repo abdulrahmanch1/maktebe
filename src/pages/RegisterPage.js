@@ -19,7 +19,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setError(null);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/register`, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/users/register`, {
         username,
         email,
         password,

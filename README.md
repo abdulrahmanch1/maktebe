@@ -35,7 +35,7 @@ npm install
 npm start
 ```
 
- ملف `.env` في مجلد frontend:
+ ملف `.env` في **جذر المشروع** (بجانب `package.json` الرئيسي):
 
 ```
 REACT_APP_API_URL=http://localhost:5000
