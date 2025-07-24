@@ -20,7 +20,7 @@ const LoginPage = () => {
     onSuccess: async (tokenResponse) => {
       try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/google-login`, {
-          idToken: tokenResponse.access_token, // Use access_token for backend verification
+          idToken: tokenResponse.id_token, // Use id_token for backend verification
         });
         const { user: userData, token: userToken } = res.data;
         login(userData.email, userToken); // Use your existing login function to set context
