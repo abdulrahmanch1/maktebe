@@ -9,6 +9,7 @@ const bookSchema = new mongoose.Schema({
   pages: { type: Number, required: true },
   publishYear: { type: Number, required: true },
   language: { type: String, required: true },
+  pdfFile: { type: String }, // Add this line for PDF file path
 });
 
 module.exports = mongoose.model('Book', bookSchema);

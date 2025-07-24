@@ -36,7 +36,7 @@ const BookCard = ({ book }) => {
       }}
     >
       <img
-        src={`/uploads/${book.cover}`}
+        src={`${process.env.REACT_APP_API_URL}/uploads/${book.cover}`}
         alt="صورة الكتاب"
         style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "4px", display: "block", margin: "0 auto" }}
       />

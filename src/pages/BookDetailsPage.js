@@ -1,3 +1,4 @@
+
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ThemeContext } from "../contexts/ThemeContext";
@@ -71,19 +72,16 @@ const BookDetailsPage = () => {
         <p style={{ fontSize: "1.1em", lineHeight: "1.8" }}>{book.description}</p>
 
         {book.pdfFile && (
-          <a
-            href={`${process.env.REACT_APP_API_URL}/uploads/${book.pdfFile}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => window.open(`${process.env.REACT_APP_API_URL}/uploads/${book.pdfFile}`, '_blank')}
             style={{
-              display: "block",
-              textAlign: "center",
               backgroundColor: theme.accent,
               color: theme.primary,
               padding: "12px 24px",
               borderRadius: "5px",
-              textDecoration: "none",
-              marginTop: "30px", // Adjusted margin-top
+              border: "none",
+              cursor: "pointer",
+              marginTop: "30px",
               fontSize: "1.1em",
               fontWeight: "bold",
               width: "100%",
@@ -91,7 +89,7 @@ const BookDetailsPage = () => {
             }}
           >
             قراءة الكتاب (PDF)
-          </a>
+          </button>
         )}
 
         <button
@@ -103,7 +101,7 @@ const BookDetailsPage = () => {
             borderRadius: "5px",
             border: "none",
             cursor: "pointer",
-            marginTop: "10px", // Adjusted margin-top
+            marginTop: "10px",
             fontSize: "1.1em",
             fontWeight: "bold",
             width: "100%",

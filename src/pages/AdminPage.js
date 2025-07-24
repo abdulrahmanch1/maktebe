@@ -9,6 +9,7 @@ const AdminPage = () => {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [cover, setCover] = useState(null); // For file upload
+  const [pdfFile, setPdfFile] = useState(null); // For PDF file upload
   const [pages, setPages] = useState("");
   const [publishYear, setPublishYear] = useState("");
   const [language, setLanguage] = useState("");
@@ -38,6 +39,7 @@ const AdminPage = () => {
     setCategory("");
     setDescription("");
     setCover(null);
+    setPdfFile(null);
     setPages("");
     setPublishYear("");
     setLanguage("");
@@ -57,6 +59,9 @@ const AdminPage = () => {
     formData.append("language", language);
     if (cover) {
       formData.append("cover", cover); // Append the file
+    }
+    if (pdfFile) {
+      formData.append("pdfFile", pdfFile); // Append the PDF file
     }
 
     try {
@@ -107,6 +112,7 @@ const AdminPage = () => {
     setLanguage(book.language);
     // Note: We don't set the cover file directly as it's a File object, not a string.
     // The user will have to re-select the cover if they want to change it.
+    // Similarly for PDF file.
   };
 
   const handleCancelEdit = () => {
@@ -156,6 +162,10 @@ const AdminPage = () => {
           <div style={{ marginBottom: "20px" }}>
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>صورة الغلاف</label>
             <input type="file" accept="image/*" onChange={(e) => setCover(e.target.files[0])} style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
+          </div>
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>ملف PDF</label>
+            <input type="file" accept="application/pdf" onChange={(e) => setPdfFile(e.target.files[0])} style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
           </div>
           <button type="submit" style={{ width: "100%", padding: "12px", borderRadius: "4px", border: "none", backgroundColor: theme.accent, color: theme.primary, fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>{editingBook ? "تحديث الكتاب" : "إضافة الكتاب"}</button>
           {editingBook && (
