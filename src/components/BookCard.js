@@ -9,10 +9,9 @@ const BookCard = ({ book }) => {
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
   const { isLoggedIn, user } = useContext(AuthContext); // Get isLoggedIn and user from AuthContext
   const navigate = useNavigate();
-  const isLiked = isFavorite(book._id);
+  const isLiked = book?._id ? isFavorite(book._id) : false;
 
-  console.log("USER FROM CONTEXT:", user);
-  console.log("isLoggedIn:", isLoggedIn);
+  
 
   const handleReadClick = () => {
     navigate(`/book/${book._id}`);
@@ -37,7 +36,7 @@ const BookCard = ({ book }) => {
       }}
     >
       <img
-        src={book.cover}
+        src={`/uploads/${book.cover}`}
         alt="صورة الكتاب"
         style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "4px", display: "block", margin: "0 auto" }}
       />

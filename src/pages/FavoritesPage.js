@@ -44,7 +44,7 @@ const FavoritesPage = () => {
   }
 
   if (error) {
-    return <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px", textAlign: "center", color: "red" }}>{error}</div>;
+    return <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px", textAlign: "center" }}>{error}</div>;
   }
 
   return (

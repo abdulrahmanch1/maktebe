@@ -10,30 +10,9 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      return storedUser && storedUser !== "" ? true : false;
-    } catch (error) {
-      return false;
-    }
-  });
-  const [user, setUser] = useState(() => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      return storedUser && storedUser !== "" ? JSON.parse(storedUser) : null;
-    } catch (error) {
-      return null;
-    }
-  });
-  const [token, setToken] = useState(() => {
-    try {
-      const storedToken = localStorage.getItem("token");
-      return storedToken && storedToken !== "" ? storedToken : null;
-    } catch (error) {
-      return null;
-    }
-  });
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("token"));
 
   // Set default Authorization header for axios on initial load
   useEffect(() => {
@@ -50,9 +29,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post("http://localhost:5000/api/users/login", { email, password });
-      const { token: userToken, ...userData } = response.data; // Correctly extract token and rest of data as user
-
-      
+      const { user: userData, token: userToken } = response.data; // Correctly extract user and token
 
       setIsLoggedIn(true);
       setUser(userData);
@@ -62,7 +39,6 @@ export const AuthProvider = ({ children }) => {
       // Set default Authorization header for axios
       axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
 
-      window.location.href = "/"; // Force reload and navigate to home
       return { success: true };
     } catch (error) {
       console.error("Login failed:", error);

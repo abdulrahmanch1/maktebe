@@ -1,4 +1,4 @@
-import React, { createContext, useState, useMemo, useEffect, useContext } from "react";
+import React, { createContext, useState, useMemo, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 
@@ -28,45 +28,48 @@ export const FavoritesProvider = ({ children }) => {
           setFavorites([]);
         }
       } else {
-        setFavorites([]); // Clear favorites if not logged in
+        setFavorites([]);
       }
     };
+
     fetchFavorites();
   }, [isLoggedIn, user, token]); // Add token to dependency array
 
-  const toggleFavorite = async (bookId) => {
+  const toggleFavorite = useCallback(async (bookId) => { // Wrapped in useCallback
     if (!isLoggedIn || !user || !user._id || !token) {
       alert("Please log in to add books to your favorites.");
       return;
     }
 
+    console.log("Toggling favorite:", bookId); // Added console.log
+
     try {
       if (favorites.includes(bookId)) {
         // Remove from favorites
-        await axios.delete(`http://localhost:5000/api/users/${user._id}/favorites/${bookId}`, {
+        const res = await axios.delete(`http://localhost:5000/api/users/${user._id}/favorites/${bookId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setFavorites(favorites.filter((id) => id !== bookId));
+        setFavorites(res.data.favorites || favorites.filter((id) => id !== bookId)); // Updated setFavorites
       } else {
         // Add to favorites
-        await axios.post(`http://localhost:5000/api/users/${user._id}/favorites`, { bookId }, {
+        const res = await axios.post(`http://localhost:5000/api/users/${user._id}/favorites`, { bookId }, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setFavorites([...favorites, bookId]);
+        setFavorites(res.data.favorites || [...favorites, bookId]); // Updated setFavorites
       }
     } catch (error) {
       console.error("Failed to toggle favorite:", error);
       alert("Failed to update favorites. Please try again.");
     }
-  };
+  }, [favorites, isLoggedIn, user, token]); // Added dependencies for useCallback
 
-  const isFavorite = (bookId) => {
+  const isFavorite = useCallback((bookId) => { // Wrapped in useCallback
     return favorites.includes(bookId);
-  };
+  }, [favorites]); // Added dependencies for useCallback
 
   const contextValue = useMemo(
     () => ({
