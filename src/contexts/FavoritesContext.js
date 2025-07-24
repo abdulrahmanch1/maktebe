@@ -9,7 +9,14 @@ export const FavoritesContext = createContext({
 });
 
 export const FavoritesProvider = ({ children }) => {
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const stored = localStorage.getItem("favorites");
+      return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      return [];
+    }
+  });
   const { isLoggedIn, user, token } = useContext(AuthContext); // Get token from AuthContext
 
   // Fetch favorites when user logs in or changes
@@ -33,7 +40,7 @@ export const FavoritesProvider = ({ children }) => {
     };
 
     fetchFavorites();
-  }, [isLoggedIn, user, token]); // Add token to dependency array
+  }, [isLoggedIn, user, token]);
 
   const toggleFavorite = useCallback(async (bookId) => { // Wrapped in useCallback
     if (!isLoggedIn || !user || !user._id || !token) {
@@ -51,7 +58,8 @@ export const FavoritesProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setFavorites(res.data.favorites || favorites.filter((id) => id !== bookId)); // Updated setFavorites
+        setFavorites(res.data.favorites || favorites.filter((id) => id !== bookId));
+        localStorage.setItem("favorites", JSON.stringify(res.data.favorites || favorites.filter((id) => id !== bookId)));
       } else {
         // Add to favorites
         const res = await axios.post(`http://localhost:5000/api/users/${user._id}/favorites`, { bookId }, {
@@ -59,7 +67,8 @@ export const FavoritesProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setFavorites(res.data.favorites || [...favorites, bookId]); // Updated setFavorites
+        setFavorites(res.data.favorites || [...favorites, bookId]);
+        localStorage.setItem("favorites", JSON.stringify(res.data.favorites || [...favorites, bookId]));
       }
     } catch (error) {
       console.error("Failed to toggle favorite:", error);

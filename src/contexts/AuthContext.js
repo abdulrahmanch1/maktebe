@@ -14,6 +14,8 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("token"));
 
+  
+
   // Set default Authorization header for axios on initial load
   useEffect(() => {
     try {
@@ -36,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       setToken(userToken);
       localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("token", userToken);
+      localStorage.setItem("favorites", JSON.stringify(userData.favorites || []));
       // Set default Authorization header for axios
       axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
 
@@ -52,6 +55,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("favorites");
     // Remove default Authorization header for axios
     delete axios.defaults.headers.common['Authorization'];
   };
