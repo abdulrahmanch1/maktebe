@@ -26,6 +26,22 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Error setting axios default header from localStorage:", error);
     }
+
+    // Add a response interceptor
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403 || (error.response.data && error.response.data.message === 'TokenExpiredError: jwt expired'))) {
+          console.log("Token expired or unauthorized, logging out...");
+          logout(); // Call logout function
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
   }, []);
 
   const login = async (email, password) => {

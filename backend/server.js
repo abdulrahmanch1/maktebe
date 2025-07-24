@@ -46,10 +46,7 @@ if (!DB_URI) {
   process.exit(1); // Stop the server if DB_URI is not defined
 }
 
-mongoose.connect(DB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(DB_URI, {})
 .then(() => console.log('MongoDB Connected...'))
 .catch(err => {
   console.error('MongoDB connection error:', err);
