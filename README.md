@@ -23,6 +23,7 @@ npm run dev
 ```
 JWT_SECRET=your_jwt_secret_key
 MONGO_URI=mongodb://localhost:27017/maktebe
+GOOGLE_CLIENT_ID=your_backend_google_client_id # Add this line for Google Login
 ```
 
 ---
@@ -30,7 +31,7 @@ MONGO_URI=mongodb://localhost:27017/maktebe
 ### ✅ Frontend
 
 ```bash
-cd frontend
+# Run from the project root
 npm install
 npm start
 ```
@@ -39,6 +40,7 @@ npm start
 
 ```
 REACT_APP_API_URL=http://localhost:5000
+REACT_APP_GOOGLE_CLIENT_ID=your_frontend_google_client_id # Add this line for Google Login
 ```
 
 ---
@@ -60,7 +62,7 @@ REACT_APP_API_URL=http://localhost:5000
 
 ---
 
-###  تفاصيل من الكود:
+### تفاصيل من الكود:
 
 في ملف `backend/middleware/authMiddleware.js`، يتم قراءة المتغير كالتالي:
 
@@ -74,7 +76,7 @@ const decoded = jwt.verify(token, JWT_SECRET);
 
 ---
 
-###  كما يوضّح `README.md`:
+### كما يوضّح `README.md`:
 
 من الضروري إنشاء ملف `.env` داخل مجلد `backend` يحتوي على:
 
@@ -94,6 +96,7 @@ MONGO_URI=mongodb://localhost:27017/maktebe
    ```env
    JWT_SECRET=اختر_كلمة_سرية_للتوقيع
    MONGO_URI=mongodb://localhost:27017/maktebe
+   GOOGLE_CLIENT_ID=your_backend_google_client_id # Add this line for Google Login
    ```
 
 3. ثم شغّل الخادم من داخل مجلد `backend`:
