@@ -48,7 +48,7 @@ export const FavoritesProvider = ({ children }) => {
       return;
     }
 
-    console.log("Toggling favorite:", bookId); // Added console.log
+    
 
     try {
       if (favorites.includes(bookId)) {
@@ -62,7 +62,7 @@ export const FavoritesProvider = ({ children }) => {
         localStorage.setItem("favorites", JSON.stringify(res.data.favorites || favorites.filter((id) => id !== bookId)));
       } else {
         // Add to favorites
-        const res = await axios.post(`http://localhost:5000/api/users/${user._id}/favorites`, { bookId }, {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/${user._id}/favorites`, { bookId }, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

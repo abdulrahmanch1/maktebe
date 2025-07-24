@@ -5,7 +5,7 @@ const User = require('../models/User');
 const { protect } = require('../middleware/authMiddleware');
 
 // Placeholder for JWT Secret - MUST be loaded from environment variables in production
-const JWT_SECRET = 'your_jwt_secret_key'; 
+const JWT_SECRET = process.env.JWT_SECRET; 
 
 // Generate JWT Token
 const generateToken = (id) => {

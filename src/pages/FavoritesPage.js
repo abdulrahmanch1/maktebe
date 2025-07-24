@@ -17,11 +17,10 @@ const FavoritesPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const fetchedBooks = [];
-        for (const bookId of favorites) {
-          const response = await axios.get(`http://localhost:5000/api/books/${bookId}`);
-          fetchedBooks.push(response.data);
-        }
+        const responses = await Promise.all(
+          favorites.map((id) => axios.get(`${process.env.REACT_APP_API_URL}/api/books/${id}`))
+        );
+        const fetchedBooks = responses.map((res) => res.data);
         setFavoriteBooksData(fetchedBooks);
       } catch (err) {
         console.error("Failed to fetch favorite book details:", err);
