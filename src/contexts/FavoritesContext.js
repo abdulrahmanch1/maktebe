@@ -24,7 +24,7 @@ export const FavoritesProvider = ({ children }) => {
     const fetchFavorites = async () => {
       if (isLoggedIn && user && user._id && token) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/users/${user._id}`, {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/${user._id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

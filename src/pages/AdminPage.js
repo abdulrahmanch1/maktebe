@@ -14,6 +14,7 @@ const AdminPage = () => {
   const [language, setLanguage] = useState("");
   const [books, setBooks] = useState([]); // State to store books from DB
   const [categories, setCategories] = useState([]); // State to store categories from DB
+  const [editingBook, setEditingBook] = useState(null); // State to store the book being edited
 
   // Fetch books and categories on component mount
   useEffect(() => {
@@ -24,11 +25,23 @@ const AdminPage = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/books`);
       setBooks(response.data);
-      const uniqueCategories = [...new Set(response.data.map((book) => book.category))];
-      setCategories(["الكل", ...uniqueCategories]); // Add "الكل" option
+      const uniqueCategories = ["الكل", ...new Set(response.data.map((book) => book.category))];
+      setCategories(uniqueCategories); // Add "الكل" option
     } catch (error) {
       console.error("Error fetching books:", error);
     }
+  };
+
+  const clearForm = () => {
+    setTitle("");
+    setAuthor("");
+    setCategory("");
+    setDescription("");
+    setCover(null);
+    setPages("");
+    setPublishYear("");
+    setLanguage("");
+    setEditingBook(null);
   };
 
   const handleSubmit = async (e) => {
@@ -47,25 +60,28 @@ const AdminPage = () => {
     }
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/books`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      alert("تم إضافة الكتاب بنجاح!");
-      // Clear form fields
-      setTitle("");
-      setAuthor("");
-      setCategory("");
-      setDescription("");
-      setCover(null);
-      setPages("");
-      setPublishYear("");
-      setLanguage("");
+      if (editingBook) {
+        // Update existing book
+        await axios.patch(`${process.env.REACT_APP_API_URL}/api/books/${editingBook._id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        alert("تم تحديث الكتاب بنجاح!");
+      } else {
+        // Add new book
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/books`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        alert("تم إضافة الكتاب بنجاح!");
+      }
+      clearForm(); // Clear form fields and reset editing state
       fetchBooks(); // Refresh book list
     } catch (error) {
-      console.error("Error adding book:", error);
-      alert("فشل إضافة الكتاب.");
+      console.error("Error saving book:", error);
+      alert("فشل حفظ الكتاب.");
     }
   };
 
@@ -80,12 +96,29 @@ const AdminPage = () => {
     }
   };
 
+  const handleEdit = (book) => {
+    setEditingBook(book);
+    setTitle(book.title);
+    setAuthor(book.author);
+    setCategory(book.category);
+    setDescription(book.description);
+    setPages(book.pages);
+    setPublishYear(book.publishYear);
+    setLanguage(book.language);
+    // Note: We don't set the cover file directly as it's a File object, not a string.
+    // The user will have to re-select the cover if they want to change it.
+  };
+
+  const handleCancelEdit = () => {
+    clearForm();
+  };
+
   return (
     <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>
       <h1 style={{ color: theme.primary, textAlign: "center", marginBottom: "30px" }}>إدارة الكتب</h1>
 
       <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px", backgroundColor: theme.secondary, borderRadius: "8px", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}>
-        <h2 style={{ color: theme.background, textAlign: "center", marginBottom: "20px" }}>إضافة كتاب جديد</h2>
+        <h2 style={{ color: theme.background, textAlign: "center", marginBottom: "20px" }}>{editingBook ? "تعديل الكتاب" : "إضافة كتاب جديد"}</h2>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div style={{ marginBottom: "15px" }}>
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>عنوان الكتاب</label>
@@ -124,7 +157,10 @@ const AdminPage = () => {
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>صورة الغلاف</label>
             <input type="file" accept="image/*" onChange={(e) => setCover(e.target.files[0])} style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
           </div>
-          <button type="submit" style={{ width: "100%", padding: "12px", borderRadius: "4px", border: "none", backgroundColor: theme.accent, color: theme.primary, fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>إضافة الكتاب</button>
+          <button type="submit" style={{ width: "100%", padding: "12px", borderRadius: "4px", border: "none", backgroundColor: theme.accent, color: theme.primary, fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>{editingBook ? "تحديث الكتاب" : "إضافة الكتاب"}</button>
+          {editingBook && (
+            <button type="button" onClick={handleCancelEdit} style={{ width: "100%", padding: "12px", borderRadius: "4px", border: "none", backgroundColor: theme.secondary, color: theme.primary, fontSize: "16px", fontWeight: "bold", cursor: "pointer", marginTop: "10px" }}>إلغاء التعديل</button>
+          )}
         </form>
       </div>
 
@@ -135,6 +171,7 @@ const AdminPage = () => {
             <div key={book._id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px", backgroundColor: theme.secondary, borderRadius: "8px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
               <p style={{ color: theme.background, margin: "0", fontWeight: "bold" }}>{book.title}</p>
               <div>
+                <button onClick={() => handleEdit(book)} style={{ backgroundColor: theme.accent, color: theme.primary, border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer", marginRight: "10px" }}>تعديل</button>
                 <button onClick={() => handleDelete(book._id)} style={{ backgroundColor: "#dc3545", color: "white", border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>حذف</button>
               </div>
             </div>
