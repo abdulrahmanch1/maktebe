@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Book = require('../models/Book');
 const multer = require('multer'); // Add multer
-const path = require('path');
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../uploads')); // Destination folder for uploads
+    cb(null, 'uploads/'); // Destination folder for uploads
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname); // Unique filename
@@ -68,18 +67,12 @@ router.post('/', upload.single('cover'), async (req, res) => { // Use upload.sin
 });
 
 // Update a book
-router.patch('/:id', getBook, upload.single('cover'), async (req, res) => {
-  console.log('req.body:', req.body);
-  console.log('req.file:', req.file);
+router.patch('/:id', getBook, async (req, res) => {
   if (req.body.title != null) res.book.title = req.body.title;
   if (req.body.author != null) res.book.author = req.body.author;
   if (req.body.category != null) res.book.category = req.body.category;
   if (req.body.description != null) res.book.description = req.body.description;
-  if (req.file) {
-    res.book.cover = req.file.filename;
-  } else if (req.body.cover != null) {
-    res.book.cover = req.body.cover;
-  }
+  if (req.body.cover != null) res.book.cover = req.body.cover;
   if (req.body.pages != null) res.book.pages = req.body.pages;
   if (req.body.publishYear != null) res.book.publishYear = req.body.publishYear;
   if (req.body.language != null) res.book.language = req.body.language;

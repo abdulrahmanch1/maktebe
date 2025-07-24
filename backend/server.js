@@ -4,15 +4,25 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path'); // Add path module
+const fs = require('fs'); // Add fs module
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 
 // Set Mongoose strictQuery to true
 mongoose.set("strictQuery", true);
 
 // Middleware
-app.use(cors()); // Enable CORS
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from your frontend
+  credentials: true,
+}));
 app.use(express.json());
 
 // Serve static files from the 'uploads' directory

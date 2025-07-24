@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ThemeContext } from "../contexts/ThemeContext";
@@ -71,6 +70,30 @@ const BookDetailsPage = () => {
         <h2 style={{ color: theme.primary, marginTop: "30px", borderTop: `1px solid ${theme.secondary}`, paddingTop: "20px" }}>الوصف:</h2>
         <p style={{ fontSize: "1.1em", lineHeight: "1.8" }}>{book.description}</p>
 
+        {book.pdfFile && (
+          <a
+            href={`${process.env.REACT_APP_API_URL}/uploads/${book.pdfFile}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "block",
+              textAlign: "center",
+              backgroundColor: theme.accent,
+              color: theme.primary,
+              padding: "12px 24px",
+              borderRadius: "5px",
+              textDecoration: "none",
+              marginTop: "30px", // Adjusted margin-top
+              fontSize: "1.1em",
+              fontWeight: "bold",
+              width: "100%",
+              transition: "background-color 0.3s ease",
+            }}
+          >
+            قراءة الكتاب (PDF)
+          </a>
+        )}
+
         <button
           onClick={handleToggleFavorite}
           style={{
@@ -80,7 +103,7 @@ const BookDetailsPage = () => {
             borderRadius: "5px",
             border: "none",
             cursor: "pointer",
-            marginTop: "30px",
+            marginTop: "10px", // Adjusted margin-top
             fontSize: "1.1em",
             fontWeight: "bold",
             width: "100%",
