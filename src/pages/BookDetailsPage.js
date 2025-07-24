@@ -56,7 +56,7 @@ const BookDetailsPage = () => {
     <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "40px 20px", display: "flex", flexDirection: "row-reverse", justifyContent: "center", alignItems: "flex-start", gap: "40px", flexWrap: "wrap" }}>
       <div style={{ flex: "1 1 300px", maxWidth: "400px" }}>
         <img
-          src={book.cover}
+          src={`${process.env.REACT_APP_API_URL}/uploads/${book.cover}`}
           alt={book.title}
           style={{ width: "100%", height: "auto", borderRadius: "8px", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)" }}
         />

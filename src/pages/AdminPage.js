@@ -1,11 +1,84 @@
-
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { books } from "../data/books";
+import axios from "axios";
 
 const AdminPage = () => {
   const { theme } = useContext(ThemeContext);
-  const categories = [...new Set(books.map((book) => book.category))];
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [cover, setCover] = useState(null); // For file upload
+  const [pages, setPages] = useState("");
+  const [publishYear, setPublishYear] = useState("");
+  const [language, setLanguage] = useState("");
+  const [books, setBooks] = useState([]); // State to store books from DB
+  const [categories, setCategories] = useState([]); // State to store categories from DB
+
+  // Fetch books and categories on component mount
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/books`);
+      setBooks(response.data);
+      const uniqueCategories = [...new Set(response.data.map((book) => book.category))];
+      setCategories(["الكل", ...uniqueCategories]); // Add "الكل" option
+    } catch (error) {
+      console.error("Error fetching books:", error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("author", author);
+    formData.append("category", category);
+    formData.append("description", description);
+    formData.append("pages", pages);
+    formData.append("publishYear", publishYear);
+    formData.append("language", language);
+    if (cover) {
+      formData.append("cover", cover); // Append the file
+    }
+
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/books`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      alert("تم إضافة الكتاب بنجاح!");
+      // Clear form fields
+      setTitle("");
+      setAuthor("");
+      setCategory("");
+      setDescription("");
+      setCover(null);
+      setPages("");
+      setPublishYear("");
+      setLanguage("");
+      fetchBooks(); // Refresh book list
+    } catch (error) {
+      console.error("Error adding book:", error);
+      alert("فشل إضافة الكتاب.");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/books/${id}`);
+      alert("تم حذف الكتاب بنجاح!");
+      fetchBooks(); // Refresh book list
+    } catch (error) {
+      console.error("Error deleting book:", error);
+      alert("فشل حذف الكتاب.");
+    }
+  };
 
   return (
     <div style={{ backgroundColor: theme.background, color: theme.primary, padding: "20px" }}>
@@ -13,32 +86,43 @@ const AdminPage = () => {
 
       <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px", backgroundColor: theme.secondary, borderRadius: "8px", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}>
         <h2 style={{ color: theme.background, textAlign: "center", marginBottom: "20px" }}>إضافة كتاب جديد</h2>
-        <form>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div style={{ marginBottom: "15px" }}>
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>عنوان الكتاب</label>
-            <input type="text" placeholder="أدخل عنوان الكتاب" style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
+            <input type="text" placeholder="أدخل عنوان الكتاب" value={title} onChange={(e) => setTitle(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
           </div>
           <div style={{ marginBottom: "15px" }}>
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>اسم الكاتب</label>
-            <input type="text" placeholder="أدخل اسم الكاتب" style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
+            <input type="text" placeholder="أدخل اسم الكاتب" value={author} onChange={(e) => setAuthor(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
           </div>
           <div style={{ marginBottom: "15px" }}>
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>التصنيف</label>
-            <select style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }}>
-              {categories.map((category) => (
-                <option key={category} value={category}>{
-                  category
-                }</option>
+            <select value={category} onChange={(e) => setCategory(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }}>
+              <option value="">اختر تصنيف</option>
+              {categories.filter(cat => cat !== "الكل").map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
           </div>
           <div style={{ marginBottom: "15px" }}>
             <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>الوصف</label>
-            <textarea placeholder="أدخل وصف الكتاب" rows="4" style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }}></textarea>
+            <textarea placeholder="أدخل وصف الكتاب" rows="4" value={description} onChange={(e) => setDescription(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }}></textarea>
+          </div>
+          <div style={{ marginBottom: "15px" }}>
+            <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>عدد الصفحات</label>
+            <input type="number" placeholder="أدخل عدد الصفحات" value={pages} onChange={(e) => setPages(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
+          </div>
+          <div style={{ marginBottom: "15px" }}>
+            <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>سنة النشر</label>
+            <input type="number" placeholder="أدخل سنة النشر" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
+          </div>
+          <div style={{ marginBottom: "15px" }}>
+            <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>اللغة</label>
+            <input type="text" placeholder="أدخل اللغة" value={language} onChange={(e) => setLanguage(e.target.value)} required style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
           </div>
           <div style={{ marginBottom: "20px" }}>
-            <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>رابط صورة الغلاف</label>
-            <input type="text" placeholder="أدخل رابط الصورة" style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
+            <label style={{ color: theme.background, display: "block", marginBottom: "5px" }}>صورة الغلاف</label>
+            <input type="file" accept="image/*" onChange={(e) => setCover(e.target.files[0])} style={{ width: "100%", padding: "10px", borderRadius: "4px", border: `1px solid ${theme.accent}`, backgroundColor: theme.background, color: theme.primary }} />
           </div>
           <button type="submit" style={{ width: "100%", padding: "12px", borderRadius: "4px", border: "none", backgroundColor: theme.accent, color: theme.primary, fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>إضافة الكتاب</button>
         </form>
@@ -48,11 +132,10 @@ const AdminPage = () => {
         <h2 style={{ color: theme.primary, textAlign: "center", marginBottom: "20px" }}>الكتب المضافة</h2>
         <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
           {books.map((book) => (
-            <div key={book.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px", backgroundColor: theme.secondary, borderRadius: "8px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
+            <div key={book._id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px", backgroundColor: theme.secondary, borderRadius: "8px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
               <p style={{ color: theme.background, margin: "0", fontWeight: "bold" }}>{book.title}</p>
               <div>
-                <button style={{ backgroundColor: theme.accent, color: theme.primary, border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer", marginLeft: "10px" }}>تعديل</button>
-                <button style={{ backgroundColor: "#dc3545", color: "white", border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>حذف</button>
+                <button onClick={() => handleDelete(book._id)} style={{ backgroundColor: "#dc3545", color: "white", border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>حذف</button>
               </div>
             </div>
           ))}

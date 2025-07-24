@@ -42,6 +42,7 @@ router.post('/register', async (req, res) => {
       res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (err) {
+    console.error("Error during registration:", err); // More detailed error logging
     res.status(500).json({ message: err.message });
   }
 });
@@ -49,7 +50,6 @@ router.post('/register', async (req, res) => {
 // User login
 router.post('/login', async (req, res) => {
   try {
-    console.log("Login request body:", req.body); // Debugging line
     const { email, password } = req.body;
 
     // Find user by email and include password for comparison
@@ -70,6 +70,7 @@ router.post('/login', async (req, res) => {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (err) {
+    console.error("Error during login:", err); // More detailed error logging
     res.status(500).json({ message: err.message });
   }
 });

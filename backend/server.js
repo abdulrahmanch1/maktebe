@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path'); // Add path module
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,9 @@ mongoose.set("strictQuery", true);
 // Middleware
 app.use(cors()); // Enable CORS
 app.use(express.json());
+
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Import Routes
 const booksRouter = require('./routes/books');
@@ -39,7 +43,7 @@ app.use((err, req, res, next) => {
 });
 
 // Connect to MongoDB
-const DB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/maktaba';
+const DB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/maktebe';
 
 if (!DB_URI) {
   console.error("❌ MONGO_URI not defined in environment variables. Exiting...");

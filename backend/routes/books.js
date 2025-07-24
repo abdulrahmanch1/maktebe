@@ -1,6 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models/Book');
+const multer = require('multer'); // Add multer
+
+// Multer setup for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // Destination folder for uploads
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname); // Unique filename
+  },
+});
+const upload = multer({ storage: storage });
 
 // Middleware to get book by ID
 async function getBook(req, res, next) {
@@ -34,13 +46,13 @@ router.get('/:id', getBook, (req, res) => {
 });
 
 // Add a new book
-router.post('/', async (req, res) => {
+router.post('/', upload.single('cover'), async (req, res) => { // Use upload.single for image upload
   const book = new Book({
     title: req.body.title,
     author: req.body.author,
     category: req.body.category,
     description: req.body.description,
-    cover: req.body.cover,
+    cover: req.file ? req.file.filename : '', // Save filename if uploaded
     pages: req.body.pages,
     publishYear: req.body.publishYear,
     language: req.body.language,
