@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const { OAuth2Client } = require('google-auth-library');
-
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-console.log('Backend GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
 const User = require('../models/User');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -199,46 +195,6 @@ router.delete('/:userId/favorites/:bookId', protect, async (req, res) => {
     res.json(user.favorites);
   } catch (err) {
     res.status(500).json({ message: err.message });
-  }
-});
-
-// Google Login
-router.post('/google-login', async (req, res) => {
-  const { idToken } = req.body;
-
-  try {
-    const ticket = await client.verifyIdToken({
-      idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
-    const { email, name } = payload;
-
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      // Create a new user if not found (you might want to generate a random password or handle it differently)
-      user = new User({
-        username: name,
-        email,
-        password: Math.random().toString(36).slice(-8), // Generate a random password for Google users
-      });
-      await user.save();
-    }
-
-    res.json({
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        favorites: user.favorites,
-        readingList: user.readingList,
-      },
-      token: generateToken(user._id),
-    });
-  } catch (error) {
-    console.error("Error during Google login:", error);
-    res.status(500).json({ message: 'Google login failed' });
   }
 });
 

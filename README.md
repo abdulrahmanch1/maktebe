@@ -16,14 +16,13 @@
 cd backend
 npm install
 npm run dev
-````
+```
 
  ملف `.env` في مجلد backend:
 
 ```
 JWT_SECRET=your_jwt_secret_key
 MONGO_URI=mongodb://localhost:27017/maktebe
-GOOGLE_CLIENT_ID=your_backend_google_client_id # Add this line for Google Login
 ```
 
 ---
@@ -40,7 +39,6 @@ npm start
 
 ```
 REACT_APP_API_URL=http://localhost:5000
-REACT_APP_GOOGLE_CLIENT_ID=your_frontend_google_client_id # Add this line for Google Login
 ```
 
 ---
@@ -96,7 +94,6 @@ MONGO_URI=mongodb://localhost:27017/maktebe
    ```env
    JWT_SECRET=اختر_كلمة_سرية_للتوقيع
    MONGO_URI=mongodb://localhost:27017/maktebe
-   GOOGLE_CLIENT_ID=your_backend_google_client_id # Add this line for Google Login
    ```
 
 3. ثم شغّل الخادم من داخل مجلد `backend`:

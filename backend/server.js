@@ -60,10 +60,10 @@ if (!DB_URI) {
 }
 
 mongoose.connect(DB_URI, {})
-.then(() => console.log('MongoDB Connected...'))
+.then(() => {})
 .catch(err => {
   console.error('MongoDB connection error:', err);
   process.exit(1); // Exit process on connection failure
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {});

@@ -4,7 +4,6 @@ import { ThemeContext } from "../contexts/ThemeContext";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useGoogleLogin } from '@react-oauth/google';
 
 const RegisterPage = () => {
   const { theme } = useContext(ThemeContext);
@@ -15,25 +14,6 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
-  const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      try {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/google-login`, {
-          idToken: tokenResponse.id_token, // Use id_token for backend verification
-        });
-        const { user: userData, token: userToken } = res.data;
-        // Assuming your login function can handle setting user data and token
-        // You might need to adjust your login context function to accept these
-        await login(userData.email, userToken); 
-        navigate("/");
-      } catch (err) {
-        console.error("Google login failed:", err);
-        setError(err.response?.data?.message || "Google login failed");
-      }
-    },
-    onError: (error) => console.log('Login Failed:', error)
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,17 +66,6 @@ const RegisterPage = () => {
         />
         {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
         <button type="submit" style={{ backgroundColor: theme.accent, color: theme.primary }}>إنشاء</button>
-        <button
-          type="button"
-          onClick={() => googleLogin()}
-          style={{
-            backgroundColor: "#DB4437", // Google red
-            color: "white",
-            marginTop: "10px",
-          }}
-        >
-          التسجيل عبر جوجل
-        </button>
       </form>
     </div>
   );
