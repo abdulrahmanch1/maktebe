@@ -4,7 +4,7 @@ import { ThemeContext } from "../contexts/ThemeContext";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
+
 
 const LoginPage = () => {
   const { theme } = useContext(ThemeContext);

@@ -11,6 +11,21 @@
 
 ## التشغيل
 
+### ⚙️ إعداد متغيرات البيئة
+
+قبل تشغيل التطبيق، يجب عليك إعداد ملفات متغيرات البيئة:
+
+1.  **لـ Backend:** انسخ `backend/.env.example` إلى `backend/.env`.
+    ```bash
+    cp backend/.env.example backend/.env
+    ```
+2.  **لـ Frontend:** انسخ `.env.example` (في جذر المشروع) إلى `.env`.
+    ```bash
+    cp .env.example .env
+    ```
+
+    **ملاحظة:** تأكد من تحديث القيم داخل ملفات `.env` الجديدة (مثل `JWT_SECRET` و `MONGO_URI`) لتناسب إعداداتك المحلية.
+
 ### ✅ Backend
 ```bash
 cd backend
