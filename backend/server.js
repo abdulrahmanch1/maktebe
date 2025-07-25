@@ -19,7 +19,7 @@ mongoose.set("strictQuery", true);
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from your frontend
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000', // Allow requests from your frontend or a configurable origin
   credentials: true,
 }));
 app.use(express.json());
