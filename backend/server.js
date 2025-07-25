@@ -66,4 +66,6 @@ mongoose.connect(DB_URI, {})
   process.exit(1); // Exit process on connection failure
 });
 
-app.listen(PORT, () => {});
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

@@ -4,6 +4,11 @@ const User = require('../models/User');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+if (!JWT_SECRET) {
+  console.error("❌ JWT_SECRET not defined in environment variables. Exiting...");
+  process.exit(1);
+}
+
 const protect = async (req, res, next) => {
   let token;
 
